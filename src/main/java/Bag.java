@@ -13,6 +13,10 @@ public abstract class Bag {
      *       - an int named capacity
      *       - an array of Strings named contents
      */
+    private String color;
+    private int numberOfContents;
+    private int capacity;
+    private String[] contents;
 
 
 
@@ -27,8 +31,12 @@ public abstract class Bag {
      * its contents.)
      */
 
-
-
+    Bag(String color, int capacity) {
+        this.color = color;
+        this.capacity = capacity;
+        this.numberOfContents = 0;
+        this.contents = new String[capacity];
+    }
 
     /*
      * TODO: Create a variety of 'getter' functions.
@@ -38,6 +46,17 @@ public abstract class Bag {
      *           - getCapacity
      */
 
+    public String getColor() {
+        return this.color;
+    }
+
+    public int getNumberOfContents() {
+        return this.numberOfContents;
+    }
+
+    public int getCapacity() {
+        return this.capacity;
+    }
 
 
 
@@ -46,8 +65,9 @@ public abstract class Bag {
      *       color of this bag to the given color.
      */
 
-
-
+    public void setColor(String newColor) {
+        this.color = newColor;
+    }
 
 
     /*
@@ -61,8 +81,20 @@ public abstract class Bag {
      *       and false otherwise.
      */
 
-
-
+    public boolean addItem(String itemToAdd) {
+        if (this.numberOfContents < this.capacity) {
+            this.numberOfContents += 1;
+            for (int i = 0; i < this.contents.length - 1; i++) {
+                if (this.contents[i] == null) {
+                    this.contents[i] = itemToAdd;
+                    break;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
     /**
@@ -70,48 +102,68 @@ public abstract class Bag {
      *       The string should be the last item added to this Bag
      *       and the item should be removed from this Bag.
      *       Remember to modify numberOfContents accordingly.
-     *
+     * <p>
      * If there are no items in this Bag, return null.
      *
      * @return
      */
 
-
-
-
-
-    /**
-     * Increase this bag's capacity by n.
-     *
-     * @param n the amount to increase this Bag's capacity by
-     */
-    public void increaseCapacity(int n) {
-        // TODO: Implement this method.
-
+    public String popItem() {
+        for (int i = 0; i < this.contents.length; i++) {
+            if (i == this.contents.length - 1) {
+                String itemToPop = this.contents[i];
+                this.contents[i] = null;
+                this.numberOfContents -= 1;
+                return itemToPop;
+            } else if (this.contents[i + 1] == null) {
+                String itemToPop = this.contents[i];
+                this.contents[i] = null;
+                this.numberOfContents -= 1;
+                return itemToPop;
+            }
+        }
+        return null;
     }
 
-    /**
-     * Return the details of this Bag.
-     * This method requires you to have created the private
-     * instance variables mentioned above.
-     *
-     * @return
-     */
-    @Override
-    public String toString() {
-        return this.color + " Bag (" + this.numberOfContents + " / " +
-                this.capacity + ")";
-    }
+        /**
+         * Increase this bag's capacity by n.
+         *
+         * @param n the amount to increase this Bag's capacity by
+         */
 
-    /*
-     * Below we have defined an abstract method.
-     * This method takes no arguments and does not return anything.
-     * It increases the capacity of this Bag.
-     *
-     * You will need to implement this method in
-     * HandBag.java and CrossbodyBag.java.
-     *
-     * We recommend you look at HandBag.java first.
-     */
-    public abstract void enhance();
-}
+        public void increaseCapacity( int n){
+            // TODO: Implement this method.
+            this.capacity += n;
+            String[] oldContents = this.contents;
+            this.contents = new String[this.capacity];
+
+            for (int i = 0; i < oldContents.length; i++) {
+                this.contents[i] = oldContents[i];
+            }
+        }
+
+        /**
+         * Return the details of this Bag.
+         * This method requires you to have created the private
+         * instance variables mentioned above.
+         *
+         * @return
+         */
+        @Override
+        public String toString () {
+            return this.color + " Bag (" + this.numberOfContents + " / " +
+                    this.capacity + ")";
+        }
+
+        /*
+         * Below we have defined an abstract method.
+         * This method takes no arguments and does not return anything.
+         * It increases the capacity of this Bag.
+         *
+         * You will need to implement this method in
+         * HandBag.java and CrossbodyBag.java.
+         *
+         * We recommend you look at HandBag.java first.
+         */
+        public abstract void enhance ();
+    }
